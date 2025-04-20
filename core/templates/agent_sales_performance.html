@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Performance</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9fafb; /* Light background */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-400 shadow-lg sticky top-0 z-50 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Sales Performance</h1>
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'dashboard' %}" class="bg-white text-blue-500 px-4 py-2 rounded-md shadow hover:bg-gray-200 transition-all">
+                    Back to Dashboard
+                </a>
+                <a href="{% url 'logout' %}" class="bg-red-500 px-4 py-2 rounded-md shadow hover:bg-red-600 transition-all">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-10 px-4">
+        <div class="bg-white shadow-md rounded p-6">
+            <h1 class="text-3xl font-bold mb-4 text-center">Sales Performance</h1>
+
+            <!-- Success Message -->
+            {% if messages %}
+                <div class="bg-green-100 text-green-800 p-4 rounded mb-6">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <!-- Sales Metrics -->
+            <div class="bg-gray-100 p-4 rounded mb-8">
+                <h2 class="text-xl font-semibold mb-2">Sales Metrics</h2>
+                <p><strong>Policies Sold:</strong> {{ policies_sold }}</p>
+                <p><strong>Sales Target:</strong> {{ target }}</p>
+                {% if policies_sold >= target %}
+                    <p class="text-green-500 font-semibold mt-2">Congratulations! You've met your target!</p>
+                {% else %}
+                    <p class="text-red-500 font-semibold mt-2">
+                        Keep going! You're {{ target|add:"-"|add:policies_sold }} policies away from your target.
+                    </p>
+                {% endif %}
+            </div>
+
+            <!-- Detailed Sales Table -->
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Detailed Sales Report</h2>
+                <table class="table-auto w-full border-collapse border border-gray-300">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="border px-4 py-2">Policy</th>
+                            <th class="border px-4 py-2">Customer</th>
+                            <th class="border px-4 py-2">Date Sold</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in sold_policies %}
+                            <tr class="hover:bg-gray-100">
+                                <td class="border px-4 py-2">{{ sale.policy.name }}</td>
+                                <td class="border px-4 py-2">
+                                    {{ sale.customer.first_name }} ({{ sale.customer.email }})
+                                </td>
+                                <td class="border px-4 py-2">
+                                    {{ sale.purchased_at|date:"d M Y, H:i" }}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td class="border px-4 py-2 text-center" colspan="3">
+                                    No sales records found.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-400 text-white py-4 text-center">
+        <p>&copy; 2024 Insurance Application. All rights reserved.</p>
+        <p>"Your security, our promise."</p>
+    </footer>
+
+</body>
+</html>

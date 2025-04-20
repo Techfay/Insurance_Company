@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Gateway - Insurance Application</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9fafb; /* Light Gray Background */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-400 shadow-lg sticky top-0 z-50 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Payment Gateway</h1>
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'available_policies' %}" class="bg-white text-blue-500 px-4 py-2 rounded-md shadow hover:bg-gray-200 transition-all">
+                    Back
+                </a>
+                <a href="{% url 'logout' %}" class="bg-red-500 px-4 py-2 rounded-md shadow hover:bg-red-600 transition-all">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-10 px-4">
+        <div class="bg-white shadow-lg rounded p-6 card max-w-lg mx-auto">
+            <h1 class="text-3xl font-bold mb-6 text-center">Payment Gateway</h1>
+            <p class="mb-4 text-gray-700 text-center">
+                You are about to purchase <strong class="text-blue-600">{{ policy.name }}</strong>.
+            </p>
+            <div class="flex justify-between text-gray-700 mb-6">
+                <span><strong>Premium:</strong></span>
+                <span>${{ policy.premium }}</span>
+            </div>
+            <div class="flex justify-between text-gray-700 mb-6">
+                <span><strong>Coverage:</strong></span>
+                <span>${{ policy.coverage_amount }}</span>
+            </div>
+            <form method="POST" action="{% url 'payment_success' policy.id %}">
+                {% csrf_token %}
+                <button type="submit" class="w-full bg-green-500 text-white py-2 px-4 rounded shadow hover:bg-green-600 transition-all">
+                    Proceed to Payment
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-400 text-white py-4 text-center mt-auto">
+        <p>&copy; 2024 Insurance Application. All rights reserved.</p>
+        <p>"Your security, our promise."</p>
+    </footer>
+
+</body>
+</html>

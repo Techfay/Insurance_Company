@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Policy</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-blue-500 shadow-lg sticky top-0 z-50 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Insurance Dashboard</h1>
+            <a href="{% url 'dashboard' %}" class="bg-gray-700 px-4 py-2 rounded-md hover:bg-gray-600 transition-all">
+                Dashboard
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-6 flex-grow">
+        <h1 class="text-2xl font-bold mb-4">Delete Policy</h1>
+        <p class="mb-4">Are you sure you want to delete the policy <strong>{{ policy.name }}</strong>?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">Delete</button>
+            <a href="{% url 'policy_list' %}" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600">Cancel</a>
+        </form>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-500 text-white py-4 text-center">
+        <p>&copy; 2024 Insurance Application. All rights reserved.</p>
+        <p>"Your security, our promise."</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Policy - Insurance Application</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9fafb; /* Light background */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .form-container {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h1 {
+            color: #1f2937;
+        }
+
+        .form-container label {
+            font-weight: bold;
+        }
+
+        .form-container button {
+            transition: background-color 0.3s ease;
+        }
+
+        .form-container button:hover {
+            background-color: #38a169; /* Darker green */
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-400 shadow-lg sticky top-0 z-50 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Sell Policy</h1>
+            <div class="flex items-center space-x-4">
+                <a href="{% url 'agent_available_policies' %}" class="bg-white text-blue-500 px-4 py-2 rounded-md shadow hover:bg-gray-200 transition-all">
+                    Back
+                </a>
+                <a href="{% url 'logout' %}" class="bg-red-500 px-4 py-2 rounded-md shadow hover:bg-red-600 transition-all">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-10 px-4">
+        <div class="form-container mx-auto max-w-lg">
+            <h1 class="text-3xl font-bold mb-6 text-center">Sell Policy</h1>
+            <p class="mb-4"><strong>Policy Name:</strong> {{ policy.name }}</p>
+            <p class="mb-4"><strong>Type:</strong> {{ policy.get_policy_type_display }}</p>
+            <p class="mb-4"><strong>Premium:</strong> ${{ policy.premium }}</p>
+            <p class="mb-4"><strong>Coverage Amount:</strong> ${{ policy.coverage_amount }}</p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="customer_name" class="block text-gray-700 font-bold mb-2">Customer Name:</label>
+                    <input type="text" name="customer_name" id="customer_name" required 
+                        class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label for="customer_email" class="block text-gray-700 font-bold mb-2">Customer Email:</label>
+                    <input type="email" name="customer_email" id="customer_email" required 
+                        class="w-full border border-gray-300 p-2 rounded focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button type="submit" class="bg-green-500 text-white py-2 px-4 rounded w-full font-bold">
+                    Sell Policy
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-400 text-white py-4 text-center">
+        <p>&copy; 2024 Insurance Application. All rights reserved.</p>
+        <p>"Your security, our promise."</p>
+    </footer>
+
+</body>
+</html>

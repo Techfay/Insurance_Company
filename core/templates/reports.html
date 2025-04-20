@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports and Analytics</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Responsive Chart Container */
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 300px; /* Default height */
+            width: 90%; /* Makes it responsive */
+        }
+
+        /* Adjust margins for better layout */
+        .chart-wrapper {
+            margin-bottom: 30px;
+        }
+
+        /* Custom background styling */
+        body {
+            background-color: #f3f4f6; /* Light gray */
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* Card hover effect */
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-400 shadow-lg sticky top-0 z-50 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Reports and Analytics</h1>
+            <div class="flex space-x-4">
+                <a href="{% url 'dashboard' %}" class="bg-white text-blue-500 px-4 py-2 rounded-md shadow hover:bg-gray-200 transition-all">
+                    Back to Dashboard
+                </a>
+                <a href="{% url 'logout' %}" class="bg-red-500 px-4 py-2 rounded-md shadow hover:bg-red-600 transition-all">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-10 px-4">
+        <div class="bg-white shadow-md rounded-lg p-6">
+            <h1 class="text-3xl font-bold mb-6 text-center">Reports and Analytics</h1>
+
+            <!-- Metrics Section -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="bg-gray-100 p-4 rounded shadow-md text-center card">
+                    <h2 class="text-xl font-semibold">Total Policies</h2>
+                    <p class="text-2xl font-bold">{{ total_policies }}</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded shadow-md text-center card">
+                    <h2 class="text-xl font-semibold">Total Claims</h2>
+                    <p class="text-2xl font-bold">{{ total_claims }}</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded shadow-md text-center card">
+                    <h2 class="text-xl font-semibold">Pending Claims</h2>
+                    <p class="text-2xl font-bold">{{ pending_claims }}</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded shadow-md text-center card">
+                    <h2 class="text-xl font-semibold">Approved Claims</h2>
+                    <p class="text-2xl font-bold">{{ approved_claims }}</p>
+                </div>
+                <div class="bg-gray-100 p-4 rounded shadow-md text-center card">
+                    <h2 class="text-xl font-semibold">Total Revenue</h2>
+                    <p class="text-2xl font-bold">${{ total_revenue }}</p>
+                </div>
+            </div>
+
+            <!-- Policies by Type Chart -->
+            <div class="chart-wrapper">
+                <h2 class="text-2xl font-bold mb-4">Policies by Type</h2>
+                <div class="chart-container">
+                    <canvas id="policiesChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Claims by Status Chart -->
+            <div class="chart-wrapper">
+                <h2 class="text-2xl font-bold mb-4">Claims by Status</h2>
+                <div class="chart-container">
+                    <canvas id="claimsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-400 text-white py-4 text-center mt-auto">
+        <p>&copy; 2024 Insurance Application. All rights reserved.</p>
+        <p>"Secure your tomorrow with us today."</p>
+    </footer>
+
+    <!-- Chart.js Integration -->
+    <script type="application/json" id="policyLabels">
+        {{ policies_by_type_json|safe }}
+    </script>
+    <script type="application/json" id="claimLabels">
+        {{ claims_by_status_json|safe }}
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        Chart.defaults.plugins.legend.position = 'top';
+
+        // Policies by Type Chart
+        const policiesByType = JSON.parse(document.getElementById("policyLabels").textContent);
+        const policiesData = {
+            labels: policiesByType.map(item => item.policy_type),
+            datasets: [{
+                label: "Policies",
+                data: policiesByType.map(item => item.count),
+                backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444'],
+            }]
+        };
+        const policiesCtx = document.getElementById("policiesChart").getContext('2d');
+        new Chart(policiesCtx, {
+            type: "pie",
+            data: policiesData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+
+        // Claims by Status Chart
+        const claimsByStatus = JSON.parse(document.getElementById("claimLabels").textContent);
+        const claimsData = {
+            labels: claimsByStatus.map(item => item.status),
+            datasets: [{
+                label: "Claims",
+                data: claimsByStatus.map(item => item.count),
+                backgroundColor: claimsByStatus.map(item => ({
+                    pending: '#fbbf24',
+                    approved: '#10b981',
+                    rejected: '#ef4444'
+                }[item.status.toLowerCase()] || '#d1d5db'))
+            }]
+        };
+        const claimsCtx = document.getElementById('claimsChart').getContext('2d');
+        new Chart(claimsCtx, {
+            type: 'doughnut',
+            data: claimsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

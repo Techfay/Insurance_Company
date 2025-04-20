@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Premium Calculators</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .quote-box {
+            background: linear-gradient(135deg, #e2e8f0, #f7fafc);
+            border-left: 4px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-blue-400 shadow-lg sticky top-0 z-50 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Premium Calculators</h1>
+            <a href="{% url 'dashboard' %}" class="bg-blue-600 px-4 py-2 rounded-md shadow hover:bg-blue-700 transition">
+                Back to Dashboard
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-10 px-4">
+        <h1 class="text-3xl font-bold text-center mb-6">Choose a Calculator</h1>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-blue-700">Life Insurance</h3>
+                <p class="text-gray-600 mb-4">Calculate premiums for life insurance policies.</p>
+                <a href="{% url 'life_premium_calculator' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700">
+                    Go to Calculator
+                </a>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-green-700">Health Insurance</h3>
+                <p class="text-gray-600 mb-4">Estimate premiums for health insurance plans.</p>
+                <a href="{% url 'health_premium_calculator' %}" class="bg-green-600 text-white px-4 py-2 rounded-md shadow hover:bg-green-700">
+                    Go to Calculator
+                </a>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-yellow-700">Vehicle Insurance</h3>
+                <p class="text-gray-600 mb-4">Calculate premiums for vehicle insurance.</p>
+                <a href="{% url 'vehicle_premium_calculator' %}" class="bg-yellow-500 text-white px-4 py-2 rounded-md shadow hover:bg-yellow-600">
+                    Go to Calculator
+                </a>
+            </div>
+        </div>
+        <!-- Quotes Section -->
+        <div class="mt-40">
+            <h2 class="text-2xl font-bold text-center mb-8">Inspirational Quotes</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="quote-box p-6 rounded-lg shadow-md">
+                    <p class="italic text-gray-700">"Insurance is the only product that both the seller and buyer hope is never actually used."</p>
+                    <p class="mt-4 font-semibold text-blue-600">- Anonymous</p>
+                </div>
+                <div class="quote-box p-6 rounded-lg shadow-md">
+                    <p class="italic text-gray-700">"In the business world, the rearview mirror is always clearer than the windshield."</p>
+                    <p class="mt-4 font-semibold text-green-600">- Warren Buffett</p>
+                </div>
+                <div class="quote-box p-6 rounded-lg shadow-md">
+                    <p class="italic text-gray-700">"The goal of insurance is to replace your worries with peace of mind."</p>
+                    <p class="mt-4 font-semibold text-yellow-600">- Unknown</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-400 text-white py-4 text-center mt-auto">
+        <p>&copy; 2024 Insurance Application. All rights reserved.</p>
+    </footer>
+</body>
+</html>

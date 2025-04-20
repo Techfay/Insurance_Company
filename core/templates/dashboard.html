@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Insurance Application</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f9fafb; /* Light Gray Background */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .card {
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .quote-box {
+            background: linear-gradient(135deg, #e2e8f0, #f7fafc);
+            border-left: 4px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-400 shadow-lg sticky top-0 z-50 text-white py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold">Insurance Dashboard</h1>
+            <a href="{% url 'logout' %}" class="bg-red-500 px-4 py-2 rounded-md shadow hover:bg-red-600 transition-all">
+                Logout
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto py-10 px-4">
+        <h1 class="text-4xl font-extrabold text-center mb-8">Welcome to Your Dashboard</h1>
+        {% if role == "admin" %}
+        <h2 class="text-2xl font-bold mb-4 text-center">Admin Options</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-blue-700">Manage Policies</h3>
+                <p class="text-gray-600 mb-4">Add, edit, or remove policies in the system.</p>
+                <a href="{% url 'policy_list' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700">
+                    Go to Policies
+                </a>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-green-700">Claims Management</h3>
+                <p class="text-gray-600 mb-4">Review and process insurance claims.</p>
+                <a href="{% url 'claim_review' %}" class="bg-green-600 text-white px-4 py-2 rounded-md shadow hover:bg-green-700">
+                    Manage Claims
+                </a>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-yellow-700">Reports</h3>
+                <p class="text-gray-600 mb-4">View detailed analytics and reports.</p>
+                <a href="{% url 'reports' %}" class="bg-yellow-500 text-white px-4 py-2 rounded-md shadow hover:bg-yellow-600">
+                    View Reports
+                </a>
+            </div>
+        </div>
+    {% elif role == "agent" %}
+        <h2 class="text-2xl font-bold mb-4 text-center">Agent Options</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-blue-700">View Policies</h3>
+                <p class="text-gray-600 mb-4">Check available policies to manage sales.</p>
+                <a href="{% url 'policy_list' %}" class="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700">
+                    View Policies
+                </a>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-green-700">Process Claims</h3>
+                <p class="text-gray-600 mb-4">Approve or reject submitted claims.</p>
+                <a href="{% url 'claim_review' %}" class="bg-green-600 text-white px-4 py-2 rounded-md shadow hover:bg-green-700">
+                    Review Claims
+                </a>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-yellow-700">Analytics</h3>
+                <p class="text-gray-600 mb-4">Track your performance and sales.</p>
+                <a href="{% url 'reports' %}" class="bg-yellow-500 text-white px-4 py-2 rounded-md shadow hover:bg-yellow-600">
+                    View Analytics
+                </a>
+            </div>
+        </div>
+    {% elif role == "customer" %}
+        <h2 class="text-2xl font-bold mb-4 text-center">Customer Options</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-indigo-700">My Policies</h3>
+                <p class="text-gray-600 mb-4">View and manage your purchased policies.</p>
+                <a href="{% url 'my_policies' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700">
+                    View Policies
+                </a>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-green-700">Submit a Claim</h3>
+                <p class="text-gray-600 mb-4">File claims for your policies easily.</p>
+                <a href="{% url 'claim_list' %}" class="bg-green-600 text-white px-4 py-2 rounded-md shadow hover:bg-green-700">
+                    Submit Claim
+                </a>
+            </div>
+            <div class="bg-white shadow-lg rounded-lg p-6 card">
+                <h3 class="text-lg font-bold mb-2 text-yellow-700">Available Policies</h3>
+                <p class="text-gray-600 mb-4">Browse and purchase new policies.</p>
+                <a href="{% url 'available_policies' %}" class="bg-yellow-500 text-white px-4 py-2 rounded-md shadow hover:bg-yellow-600">
+                    Browse Policies
+                </a>
+            </div>
+        </div>
+    {% endif %}
+                
+        <!-- Premium Calculator Card -->
+        <div class="bg-white shadow-lg rounded-lg p-6 card mt-20">
+            <h3 class="text-lg font-bold mb-2 text-indigo-700">Premium Calculator</h3>
+            <p class="text-gray-600 mb-4">Choose a calculator to estimate your insurance premium.</p>
+            <a href="{% url 'premium_calculator_overview' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700">
+                Explore Calculators
+            </a>
+        </div>
+        <!-- Quotes Section -->
+        <div class="mt-16">
+            <h2 class="text-2xl font-bold text-center mb-8">Inspirational Quotes</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="quote-box p-6 rounded-lg shadow-md">
+                    <p class="italic text-gray-700">"Insurance is the only product that both the seller and buyer hope is never actually used."</p>
+                    <p class="mt-4 font-semibold text-blue-600">- Anonymous</p>
+                </div>
+                <div class="quote-box p-6 rounded-lg shadow-md">
+                    <p class="italic text-gray-700">"In the business world, the rearview mirror is always clearer than the windshield."</p>
+                    <p class="mt-4 font-semibold text-green-600">- Warren Buffett</p>
+                </div>
+                <div class="quote-box p-6 rounded-lg shadow-md">
+                    <p class="italic text-gray-700">"The goal of insurance is to replace your worries with peace of mind."</p>
+                    <p class="mt-4 font-semibold text-yellow-600">- Unknown</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-blue-400 text-white py-4 text-center mt-auto">
+        <p>&copy; 2024 Insurance Application. All rights reserved.</p>
+        <p>"Your security, our promise."</p>
+    </footer>
+
+</body>
+</html>
